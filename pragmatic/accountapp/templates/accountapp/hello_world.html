@@ -1,8 +1,20 @@
 {% extends 'base.html' %}
-
 {% block content %}
+    {#    Block 안에 스타일이 있어야 동작을 하는구만#}
+    <style>.testing {
+        background-color: aliceblue;
+        height: 3rem;
+        width: 3rem;
+        margin: 1rem;
+    {#1rem = 16px#}
+    }</style>
     <div style="height: 20rem; background-color: aquamarine; border-radius: 1rem; margin:2rem">
-    hi
+        {#    아무리 속성이 있어도 꺽쇠엔아 컨텐츠(String)이 없으면 동작을 하지 않는거 같다#}
+        <div class="testing" , style="display: block">block</div>
+        <div class="testing" , style="display: inline">inline</div>
+        <div class="testing" , style="display: inline-block">inline block</div>
+        <div class="testing" , style="display: none">none</div>
+        <div class="testing" , >default</div>
 
     </div>
 {% endblock %}
