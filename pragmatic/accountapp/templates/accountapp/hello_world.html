@@ -12,13 +12,16 @@
         <h1 style="font-family: 'lobster',cursive;">Hello World List</h1>
         <form action="/account/hello_world/" method="post">
             {% csrf_token %}
-            <input type="text" name="hello_world_input" >
+            <input type="text" name="hello_world_input">
 
             {% csrf_token %}
             <input type="submit" class="btn btn-primary" value="Make POST">
         </form>
-        <h1>
-            {{ text }}
-        </h1>
+        {% if hello_world_output %}
+            <h1>
+                {#            Use Database value#}
+                {{ hello_world_output.text }}
+            </h1>
+        {% endif %}
     </div>
 {% endblock %}
