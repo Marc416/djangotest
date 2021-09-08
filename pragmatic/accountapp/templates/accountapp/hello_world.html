@@ -14,7 +14,20 @@
         <div class="testing" , style="display: inline">inline</div>
         <div class="testing" , style="display: inline-block">inline block</div>
         <div class="testing" , style="display: none">none</div>
-        <div class="testing" , >default</div>
+        <div class="testing" ,>default</div>
 
+        <h1>testing</h1>
+        <form action="/account/hello_world/" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" value="Make POST">
+        </form>
+        <form action="/account/hello_world/" method="get">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" value="Make Post to Get">
+        </form>
+
+        <h1>
+            {{ text }}
+        </h1>
     </div>
 {% endblock %}
