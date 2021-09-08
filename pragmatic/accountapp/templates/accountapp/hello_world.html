@@ -17,11 +17,14 @@
             {% csrf_token %}
             <input type="submit" class="btn btn-primary" value="Make POST">
         </form>
-        {% if hello_world_output %}
-            <h1>
-                {#            Use Database value#}
-                {{ hello_world_output.text }}
-            </h1>
+        <h1>hello_world_list</h1>
+        {% if hello_world_list %}
+            {% for hello_world in hello_world_list %}
+                <h4>
+                    {#변수사용시 괄호 주의#}
+                    {{ hello_world.text }}
+                </h4>
+            {% endfor %}
         {% endif %}
     </div>
 {% endblock %}
