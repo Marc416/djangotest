@@ -28,4 +28,5 @@ def hello_world(request):
         return HttpResponseRedirect(reverse('accountapp:hello_world'))
     else:
         hello_world_list = HelloWorld.objects.all()
+        # 렌더가 무슨 역할을 하는지 궁금하다.
         return render(request, 'accountapp/hello_world.html', context={'hello_world_list': hello_world_list})
