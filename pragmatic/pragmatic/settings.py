@@ -14,6 +14,8 @@ from pathlib import Path
 
 import os, environ
 
+from django.urls import reverse_lazy
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -131,3 +133,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# URL로 접속할경우 장고에서 기본으로 제공해주는 페이지로 안내를 하게되는데
+# 로그인, 로그아웃을 재설정해줌.
+LOGIN_REDIRECT_URL = reverse_lazy('accountapp:hello_world')
+LOGOUT_REDIRECT_URL = reverse_lazy('accountapp:login')
