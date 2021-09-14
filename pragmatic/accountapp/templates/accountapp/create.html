@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %}
-    <div>
+    <div style="text-align: center; max-width: 300px; margin: 4rem auto;">
+        {#    mb : margin bottom#}
+        <div class="mb-4">
+            <h4>Sign Up
+            </h4>
+        </div>
         <form action="{% url 'accountapp:create' %}" method="post">
             {% csrf_token %}
-            {{ form }}
-            <input type="submit" class="btn btn-primary">
+            {#                {{ form }}#}
+            {#                Below is for boot strap form#}
+            {% bootstrap_form form %}
+            <input type="submit" class=" btn-primary">
         </form>
     </div>
 
