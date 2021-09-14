@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
 from accountapp.models import HelloWorld
 
@@ -44,3 +44,7 @@ class AccountCreateView(CreateView):
     # reverse_lazy는 클래스형 뷰 호출, reverse는 함수형 뷰 호출이라고만 알면 됨.
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/create.html'
+
+class AccountDetailView(DetailView):
+    model = User
+    template_name = 'accountapp/detail.html'
