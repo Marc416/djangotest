@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render
 
 # Create your views here.
@@ -12,28 +12,31 @@ from accountapp.models import HelloWorld
 
 
 def hello_world(request):
-    if request.method == "POST":
-        # hello_world_input이라는 이름을 가진 데이터를 가져와라
-        input_data = request.POST.get('hello_world_input')
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            # hello_world_input이라는 이름을 가진 데이터를 가져와라
+            input_data = request.POST.get('hello_world_input')
 
-        # DB인스턴스 생성
-        new_hello_world = HelloWorld()
-        # Add data
-        new_hello_world.text = input_data
-        # DB 저장
-        new_hello_world.save()
+            # DB인스턴스 생성
+            new_hello_world = HelloWorld()
+            # Add data
+            new_hello_world.text = input_data
+            # DB 저장
+            new_hello_world.save()
 
-        # SQL SELECT ALL
-        hello_world_list = HelloWorld.objects.all()
+            # SQL SELECT ALL
+            hello_world_list = HelloWorld.objects.all()
 
-        # 재연결시(새로고침) Get으로 해당 페이지 보여줄 수 있도록
-        # 솔직히 reverse가 뭐 하는 건지모르겠음.
-        # 왜 String으로 변수들을 불러서 쓰는지도 모르겠음->이거 엄청 불편하지 않나?
-        return HttpResponseRedirect(reverse('accountapp:hello_world'))
+            # 재연결시(새로고침) Get으로 해당 페이지 보여줄 수 있도록
+            # 솔직히 reverse가 뭐 하는 건지모르겠음.
+            # 왜 String으로 변수들을 불러서 쓰는지도 모르겠음->이거 엄청 불편하지 않나?
+            return HttpResponseRedirect(reverse('accountapp:hello_world'))
+        else:
+            hello_world_list = HelloWorld.objects.all()
+            # 렌더가 무슨 역할을 하는지 궁금하다.
+            return render(request, 'accountapp/hello_world.html', context={'hello_world_list': hello_world_list})
     else:
-        hello_world_list = HelloWorld.objects.all()
-        # 렌더가 무슨 역할을 하는지 궁금하다.
-        return render(request, 'accountapp/hello_world.html', context={'hello_world_list': hello_world_list})
+        return HttpResponseRedirect(reverse('accountapp:login'))
 
 
 class AccountCreateView(CreateView):
@@ -46,11 +49,19 @@ class AccountCreateView(CreateView):
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/create.html'
 
+    
+
 
 class AccountDetailView(DetailView):
     model = User
     context_object_name = 'target_user'
     template_name = 'accountapp/detail.html'
+
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated and self.get_object() == self.request.user:
+            return super().get(*args, **kwargs)
+        else:
+            return HttpResponseForbidden()
 
 
 class AccountUpdateView(UpdateView):
@@ -60,9 +71,34 @@ class AccountUpdateView(UpdateView):
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/update.html'
 
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated and self.get_object() == self.request.user:
+            return super().get(*args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+    def post(self, *args, **kwargs):
+        if self.request.user.is_authenticated and self.get_object() == self.request.user:
+            return super().post(*args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+
 class AccountDeleteView(DeleteView):
     model = User
     context_object_name = 'target_user'
     success_url = reverse_lazy('accountapp:login')
     # success_url이라는게 다음 실행되는게 성공하면인가?
     template_name = 'accountapp/delete.html'
+
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated and self.get_object() == self.request.user:
+            return super().get(*args, **kwargs)
+        else:
+            return HttpResponseForbidden()
+
+    def post(self, *args, **kwargs):
+        if self.request.user.is_authenticated and self.get_object() == self.request.user:
+            return super().post(*args, **kwargs)
+        else:
+            return HttpResponseForbidden()
