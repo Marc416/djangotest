@@ -6,7 +6,7 @@
         <div class="mb-4">
             <h4>Change Info</h4>
         </div>
-        <form action="{% url 'accountapp:update' pk=user.pk %}" method="post">
+        <form action="{% url 'accountapp:update' pk=target_us er.pk %}" method="post">
             {% csrf_token %}
             {#            {{ form }}#}
             {#                            Below is for boot strap form#}
