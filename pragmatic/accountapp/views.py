@@ -6,10 +6,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
+from accountapp.decorator import account_ownership_required
 from accountapp.forms import AccountUpdateForm
 from accountapp.models import HelloWorld
+
+has_ownership = [account_ownership_required, login_required]
 
 
 @login_required
@@ -24,9 +28,6 @@ def hello_world(request):
         new_hello_world.text = input_data
         # DB 저장
         new_hello_world.save()
-
-        # SQL SELECT ALL
-        hello_world_list = HelloWorld.objects.all()
 
         # 재연결시(새로고침) Get으로 해당 페이지 보여줄 수 있도록
         # 솔직히 reverse가 뭐 하는 건지모르겠음.
@@ -61,6 +62,8 @@ class AccountDetailView(DetailView):
             return HttpResponseForbidden()
 
 
+@method_decorator(has_ownership, 'get')
+@method_decorator(has_ownership, 'post')
 class AccountUpdateView(UpdateView):
     model = User
     context_object_name = 'target_user'
@@ -68,19 +71,9 @@ class AccountUpdateView(UpdateView):
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/update.html'
 
-    def get(self, *args, **kwargs):
-        if self.request.user.is_authenticated and self.get_object() == self.request.user:
-            return super().get(*args, **kwargs)
-        else:
-            return HttpResponseForbidden()
 
-    def post(self, *args, **kwargs):
-        if self.request.user.is_authenticated and self.get_object() == self.request.user:
-            return super().post(*args, **kwargs)
-        else:
-            return HttpResponseForbidden()
-
-
+@method_decorator(has_ownership, 'get')
+@method_decorator(has_ownership, 'post')
 class AccountDeleteView(DeleteView):
     model = User
     context_object_name = 'target_user'
@@ -88,14 +81,15 @@ class AccountDeleteView(DeleteView):
     # success_url이라는게 다음 실행되는게 성공하면인가?
     template_name = 'accountapp/delete.html'
 
-    def get(self, *args, **kwargs):
-        if self.request.user.is_authenticated and self.get_object() == self.request.user:
-            return super().get(*args, **kwargs)
-        else:
-            return HttpResponseForbidden()
-
-    def post(self, *args, **kwargs):
-        if self.request.user.is_authenticated and self.get_object() == self.request.user:
-            return super().post(*args, **kwargs)
-        else:
-            return HttpResponseForbidden()
+# 아래 코드와 account_ownership_required와 같다는데 잘모르겠다.
+# def get(self, *args, **kwargs):
+#     if self.request.user.is_authenticated and self.get_object() == self.request.user:
+#         return super().get(*args, **kwargs)
+#     else:
+#         return HttpResponseForbidden()
+#
+# def post(self, *args, **kwargs):
+#     if self.request.user.is_authenticated and self.get_object() == self.request.user:
+#         return super().post(*args, **kwargs)
+#     else:
+#         return HttpResponseForbidden()
