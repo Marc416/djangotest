@@ -2,6 +2,8 @@ FROM python:3.9.0
 
 WORKDIR /home/
 
+RUN echo "testing1234"
+
 RUN git clone https://github.com/Marc416/djangotest.git
 
 WORKDIR /home/pragmatic/
