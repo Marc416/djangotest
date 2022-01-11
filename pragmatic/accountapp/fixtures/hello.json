@@ -1,0 +1,9 @@
+[
+  {
+    "model": "accountapp.HelloWorld",
+    "pk": 1,
+    "fields": {
+      "text": "super new"
+    }
+  }
+]

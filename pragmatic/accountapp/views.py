@@ -97,6 +97,11 @@ class AccountUpdateView(UpdateView):
 
 @method_decorator(has_ownership, 'get')
 @method_decorator(has_ownership, 'post')
+# 데코레이터들을 리스트로 묶음으로써 한번에 사용할 수도 있음
+# @method_decorator(login_required, 'get')
+# @method_decorator(login_required, 'post')
+# @method_decorator(account_ownership_required, 'get')
+# @method_decorator(account_ownership_required, 'post')
 class AccountDeleteView(DeleteView):
     model = User
     context_object_name = 'target_user'
@@ -104,15 +109,15 @@ class AccountDeleteView(DeleteView):
     # success_url이라는게 다음 실행되는게 성공하면인가?
     template_name = 'accountapp/delete.html'
 
-# 아래 코드와 account_ownership_required와 같다는데 잘모르겠다.
-# def get(self, *args, **kwargs):
-#     if self.request.user.is_authenticated and self.get_object() == self.request.user:
-#         return super().get(*args, **kwargs)
-#     else:
-#         return HttpResponseForbidden()
-#
-# def post(self, *args, **kwargs):
-#     if self.request.user.is_authenticated and self.get_object() == self.request.user:
-#         return super().post(*args, **kwargs)
-#     else:
-#         return HttpResponseForbidden()
+    # # 아래 코드와 account_ownership_required와 같다는데 잘모르겠다. -> 이제 이해되는듯
+    # def get(self, *args, **kwargs):
+    #     if self.request.user.is_authenticated and self.get_object() == self.request.user:
+    #         return super().get(*args, **kwargs)
+    #     else:
+    #         return HttpResponseForbidden()
+    #
+    # def post(self, *args, **kwargs):
+    #     if self.request.user.is_authenticated and self.get_object() == self.request.user:
+    #         return super().post(*args, **kwargs)
+    #     else:
+    #         return HttpResponseForbidden()
