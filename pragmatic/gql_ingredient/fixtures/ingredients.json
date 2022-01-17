@@ -1,0 +1,52 @@
+[
+  {
+    "model": "gql_ingredient.category",
+    "pk": 1,
+    "fields": {
+      "name": "Dairy"
+    }
+  },
+  {
+    "model": "gql_ingredient.category",
+    "pk": 2,
+    "fields": {
+      "name": "Meat"
+    }
+  },
+  {
+    "model": "gql_ingredient.ingredient",
+    "pk": 1,
+    "fields": {
+      "name": "Eggs",
+      "notes": "Good old eggs",
+      "category": 1
+    }
+  },
+  {
+    "model": "gql_ingredient.ingredient",
+    "pk": 2,
+    "fields": {
+      "name": "Milk",
+      "notes": "Comes from a cow",
+      "category": 1
+    }
+  },
+  {
+    "model": "gql_ingredient.ingredient",
+    "pk": 3,
+    "fields": {
+      "name": "Beef",
+      "notes": "Much like milk, this comes from a cow",
+      "category": 2
+    }
+  },
+  {
+    "model": "gql_ingredient.ingredient",
+    "pk": 4,
+    "fields": {
+      "name": "Chicken",
+      "notes": "Definitely doesn't come from a cow",
+      "category": 2
+    }
+  }
+]
